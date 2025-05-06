@@ -1,0 +1,5 @@
+Requirements:
+    Tags can be applied to various entities (e.g., posts, products, photos).
+    Users can create, edit, and delete tags.
+    A tag can have metadata such as name, description, and creator.
+    Efficient retrieval and searching for tagged entities.
