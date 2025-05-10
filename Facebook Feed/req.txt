@@ -1,0 +1,21 @@
+Functional Requirements
+
+Core Requirements
+Users should be able to create posts.
+Users should be able to friend/follow people.
+Users should be able to view a feed of posts from people they follow, in chronological order.
+Users should be able to page through their feed.
+
+Below the line (out of scope):
+
+Users should be able to like and comment on posts.
+Posts can be private or have restricted visibility.
+For the sake of this problem (and most system design problems for what it's worth), we can assume that users are already authenticated and that we have their user ID stored in the session or JWT.
+
+
+Non-Functional Requirements
+Core Requirements
+The system should be highly available (prioritizing availability over consistency). Tolerate up to 2 minutes for eventual consistency.
+Posting and viewing the feed should be fast, returning in < 500ms.
+The system should be able to handle a massive number of users (2B).
+Users should be able to follow an unlimited number of users, users should be able to be followed by an unlimited number of users.

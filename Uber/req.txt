@@ -1,0 +1,65 @@
+✅ Functional Requirements (FRs)
+User Registration & Authentication
+
+Users (riders & drivers) can sign up, log in, and verify phone/email.
+
+Ride Matching
+
+Match riders with nearby available drivers in real-time.
+
+Real-Time Ride Tracking
+
+Riders and drivers can see each other's live location on a map.
+
+Fare Estimation & Payments
+
+Show estimated fare before ride and allow digital payments post-ride.
+
+Rating & Feedback System
+
+Both rider and driver can rate and review each other after the trip.
+
+Trip History
+
+Users can view their past rides and details.
+
+Driver Onboarding & Status
+
+Drivers can upload documents and toggle online/offline status.
+
+Notifications
+
+Push/SMS notifications for ride updates and status changes.
+
+✅ Non-Functional Requirements (NFRs)
+Scalability
+
+System must handle millions of concurrent users worldwide.
+
+Low Latency
+
+Ride matching and real-time location updates should occur within milliseconds.
+
+High Availability
+
+99.99% uptime; must be resilient to failures across regions.
+
+Data Consistency
+
+Strong consistency for booking and payments; eventual for user profiles.
+
+Security
+
+Secure payments, encrypted data transmission, and protected user data.
+
+Fault Tolerance
+
+Graceful recovery from service failures (e.g., retry mechanisms, circuit breakers).
+
+Observability
+
+Logs, metrics, and alerting for monitoring system health.
+
+Maintainability
+
+Modular services and clean APIs for easy future updates.
