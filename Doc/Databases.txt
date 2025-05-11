@@ -1,0 +1,155 @@
+==================================================
+           HLD Database Selection Cheat Sheet
+==================================================
+
+1. Relational Databases (RDBMS)
+--------------------------------
+Use When:
+- Strong relationships (joins)
+- ACID transactions needed
+- Structured schema
+- Moderate read/write load
+
+Examples:
+- PostgreSQL, MySQL
+
+Typical Systems:
+- Banking systems
+- E-commerce order management
+- Inventory systems
+
+--------------------------------------------------
+
+2. Key-Value Stores
+---------------------
+Use When:
+- Fast lookup by key
+- Simple data model
+- Caching/session storage
+
+Examples:
+- Redis, DynamoDB
+
+Typical Systems:
+- User sessions
+- Leaderboards
+- Rate limiting
+
+--------------------------------------------------
+
+3. Document Stores
+-------------------
+Use When:
+- Semi-structured data (e.g., JSON)
+- Flexible schema
+- Embedded documents
+
+Examples:
+- MongoDB, Couchbase
+
+Typical Systems:
+- User profiles
+- Product catalogs
+- CMS/blogs
+
+--------------------------------------------------
+
+4. Wide-Column Stores
+-----------------------
+Use When:
+- Write-heavy workload
+- Horizontal scalability
+- Time-series/log data
+
+Examples:
+- Apache Cassandra, HBase
+
+Typical Systems:
+- Chat history
+- IoT data
+- Real-time analytics
+
+--------------------------------------------------
+
+5. Search Engines
+------------------
+Use When:
+- Full-text search
+- Filtering and aggregation
+- Near real-time indexing
+
+Examples:
+- Elasticsearch, Solr
+
+Typical Systems:
+- Product/document search
+- Log analysis
+
+--------------------------------------------------
+
+6. Graph Databases
+--------------------
+Use When:
+- Relationship traversal
+- Graph algorithms
+- Non-tabular relationship modeling
+
+Examples:
+- Neo4j, Amazon Neptune
+
+Typical Systems:
+- Social networks
+- Fraud detection
+- Recommendation engines
+
+--------------------------------------------------
+
+7. Time-Series Databases
+--------------------------
+Use When:
+- Timestamped data
+- Time-based queries
+- Retention/downsampling
+
+Examples:
+- InfluxDB, TimescaleDB
+
+Typical Systems:
+- System monitoring
+- Sensor/IoT data
+- Stock prices
+
+--------------------------------------------------
+
+8. Data Lakes / Analytics DBs
+-------------------------------
+Use When:
+- Batch analytics
+- Large-scale aggregation
+- Append-only workloads
+
+Examples:
+- BigQuery, Apache Hive, Snowflake
+
+Typical Systems:
+- Reporting
+- Data warehousing
+- ML pipelines
+
+--------------------------------------------------
+
+Quick Summary Table
+====================
+| Use Case                     | DB Type             | Example               |
+|-----------------------------|---------------------|------------------------|
+| E-commerce Orders           | Relational           | PostgreSQL, MySQL      |
+| Real-time Leaderboard       | Key-Value Store      | Redis                  |
+| Social Graph                | Graph Database       | Neo4j                  |
+| Product Catalog             | Document Store       | MongoDB                |
+| Log Aggregation + Search    | Search Engine        | Elasticsearch          |
+| Time-based Sensor Data      | Time-Series DB       | InfluxDB               |
+| High-throughput Chat        | Wide-Column Store    | Cassandra              |
+| Recommendation Engine       | Graph DB + Cache     | Neo4j + Redis          |
+| Analytics Reporting         | Data Lake            | BigQuery, Hive         |
+
+==================================================
