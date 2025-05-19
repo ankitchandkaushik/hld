@@ -152,3 +152,103 @@ B-Tree	1D	Excellent	Equality, range	Indexing sorted scalar keys
 R-Tree	2D+	Good	Spatial range, nearest	Indexing variable-size objects
 Geohash	2D → 1D	Trivial	Proximity (grid cells)	Simple bucketing/sharding
 BKD-Tree	N-D	Poor (batch-load)	Multidimensional range	High-throughput filtering
+
+
+
+
+Quad tree: https://blog.bytebytego.com/p/how-quadtree-works
+GeoHahsh: https://www.pubnub.com/guides/what-is-geohashing/
+R tree: 
+
+
+
+
+
+
+
+
+
+
+Quad Tree vs R-Tree vs Geohash
+===============================
+
+1. Quad Tree
+------------
+Concept:
+- A hierarchical data structure that recursively divides a 2D space into four quadrants (NW, NE, SW, SE).
+
+How it works:
+- Starts with a bounding box (the whole space).
+- If a region has more than a threshold number of points, it's subdivided into 4 equal rectangles.
+- This continues until each leaf node meets the threshold.
+
+Use Cases:
+- Efficient for 2D point data (e.g., gaming maps, image processing, GIS).
+- Good for range queries (e.g., “find all points in this rectangle”).
+
+Pros:
+- Easy to implement.
+- Works well with uniformly distributed spatial data.
+- Naturally supports range queries and nearest neighbor searches.
+
+Cons:
+- Can become unbalanced with skewed data.
+- Doesn't handle high-dimensional or non-point geometries well.
+
+2. R-Tree
+---------
+Concept:
+- A height-balanced tree (like B-Trees) used to index multi-dimensional data using bounding rectangles (MBRs).
+
+How it works:
+- Nodes contain rectangles that bound the geometries (points, lines, polygons).
+- Leaf nodes store data entries; internal nodes store MBRs of children.
+- Insertion tries to minimize MBR area increase.
+
+Use Cases:
+- Spatial databases (e.g., PostGIS, Oracle Spatial).
+- Great for spatial queries like intersection, containment, and nearest neighbor for complex shapes.
+
+Pros:
+- Efficient for indexing and querying arbitrary geometries.
+- Handles skewed distributions better than Quad Trees.
+- Good for spatial joins.
+
+Cons:
+- Complex insertion/deletion.
+- Performance can degrade with overlapping MBRs in high dimensions.
+
+3. Geohash
+----------
+Concept:
+- A string-based spatial index that encodes latitude/longitude into a base32 hash.
+
+How it works:
+- Recursively divides the globe into a grid, alternating between lat/lon.
+- Each cell gets a unique alphanumeric string.
+- Longer geohashes = more precise.
+
+Use Cases:
+- Location-based services, key-value store indexing (e.g., Redis).
+- Fast prefix-based proximity lookups.
+
+Pros:
+- Fast string-based lookups.
+- Easy to shard spatial data.
+- Works well in distributed systems.
+
+Cons:
+- Poor for range queries across cell boundaries.
+- Nearby locations may not share prefixes.
+
+Summary Table
+-------------
+
+| Feature         | Quad Tree                 | R-Tree                             | Geohash                             |
+|----------------|---------------------------|------------------------------------|-------------------------------------|
+| Structure       | Recursive 2D partitions   | Tree of bounding rectangles (MBRs)| Encoded hash of grid location       |
+| Best for        | Point data in 2D          | Arbitrary shapes (polygons, lines)| Fast proximity with lat/lon         |
+| Query Types     | Range, nearest neighbor   | Range, spatial joins, intersects  | Proximity via prefix matching       |
+| Spatial Skew    | Poor                      | Good                               | Moderate (depends on geohash length)|
+| Dimensionality  | 2D only                   | 2D–higher dimensional              | 2D (lat/lon)                        |
+| Storage         | Tree                      | Tree                               | Key-value compatible string         |
