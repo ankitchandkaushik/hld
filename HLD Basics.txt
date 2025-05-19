@@ -1,0 +1,414 @@
+🟢 Latency:
+- Time taken for a single request to complete.
+- Goal: Minimize it (e.g., 100ms for search).
+- Lower latency = better UX.
+
+🟢 Throughput:
+- Number of requests handled per unit time.
+- Goal: Maximize it (e.g., 1000 TPS).
+- Batch jobs, queues → care more about this.
+
+🟢 Availability:
+- % of time system is up.
+- 99.9% uptime = ~43 mins downtime/month.
+- Use redundancy + failover to increase.
+
+🟢 Scalability:
+- System’s ability to handle growth.
+- Vertical = scale up (CPU/RAM).
+- Horizontal = scale out (more machines).
+- Use load balancers, sharding, caching.
+
+🟢 CAP Theorem:
+- You can pick only 2: Consistency, Availability, Partition Tolerance.
+- CP → HBase; AP → Cassandra; CA → Single node DB (not real in distributed systems).
+
+
+🟢 PACELC = Partition-Availability-Consistency Else Latency-Consistency
+- P → Partition
+- A → Availability
+- C → Consistency
+- E → Else (no partition)
+- L → Latency
+
+🧩 During Partition:
+- Must choose: Availability (A) or Consistency (C)
+
+📈 Else (Normal State):
+- Must choose: Latency (L) or Consistency (C)
+
+🛠️ Examples:
+- Cassandra: PA/EL (high availability + low latency)
+- HBase: PC/EC (strong consistency both in and out of partitions)
+- Spanner: PC/EC (globally consistent, higher latency)
+
+
+🟢 Partitioning:
+- Generic term for splitting data into logical subsets.
+- Can be horizontal (rows) or vertical (columns).
+- Often used within a single DB.
+- Example: PostgreSQL partitioned tables.
+
+🟢 Sharding:
+- A type of horizontal partitioning across machines.
+- Each shard is a separate DB/server.
+- Helps scale systems horizontally.
+- Requires routing logic.
+- Example: MongoDB, Cassandra.
+
+🎯 Rule of Thumb:
+"All sharding is partitioning, but not all partitioning is sharding."
+
+
+
+
+📚 Day 3: Databases – SQL vs NoSQL, Sharding, Replication, Partitioning
+✅ 1. SQL vs NoSQL
+SQL (Relational Databases)
+Examples: MySQL, PostgreSQL, Oracle, MS SQL Server
+
+Schema: Fixed schema; tables with rows and columns.
+
+Data Integrity: Strong ACID compliance (Atomicity, Consistency, Isolation, Durability).
+
+Best for: Structured data, transactions (e.g., banking, ERP systems).
+
+Advantages:
+
+Joins and relationships are well supported.
+
+Mature ecosystems and tooling.
+
+Complex queries (via SQL) are supported efficiently.
+
+Disadvantages:
+
+Scaling is harder (typically vertical scaling).
+
+Schema evolution is complex.
+
+NoSQL (Non-relational Databases)
+Types:
+
+Document: MongoDB, CouchDB
+
+Key-Value: Redis, DynamoDB
+
+Column-Family: Cassandra, HBase
+
+Graph: Neo4j, ArangoDB
+
+Schema: Flexible or schema-less.
+
+Data Integrity: BASE (Basically Available, Soft state, Eventual consistency).
+
+Best for: Unstructured or semi-structured data, high-speed data ingestion (e.g., analytics, real-time feeds, IoT).
+
+Advantages:
+
+Horizontally scalable (across machines).
+
+Schema flexibility; easy to evolve.
+
+High availability and performance for large-scale systems.
+
+Disadvantages:
+
+Limited complex querying (e.g., joins).
+
+Less mature tools compared to relational DBs.
+
+✅ 2. Sharding
+Definition:
+Sharding is a database partitioning technique that splits large datasets into smaller, faster, more manageable pieces called shards, which are stored across multiple servers.
+
+How It Works:
+Each shard holds a portion of the data. A shard key is used to determine where to place/read the data.
+
+Example:
+User data might be sharded by user ID:
+
+Shard 1 → User IDs 1–10000
+
+Shard 2 → User IDs 10001–20000
+
+Advantages:
+Enables horizontal scaling.
+
+Better performance and reduced load per server.
+
+Challenges:
+Complex to implement and manage.
+
+Rebalancing shards is hard when one becomes “hot” (uneven traffic).
+
+Cross-shard queries are more expensive.
+
+✅ 3. Replication
+Definition:
+Replication is the process of copying data from one database server (primary/master) to one or more others (secondary/replicas).
+
+Types:
+Master-Slave (Primary-Secondary): Reads from replicas, writes to primary.
+
+Multi-Master: All nodes can accept writes (more complex conflict resolution).
+
+Synchronous vs Asynchronous:
+
+Synchronous: Ensures consistency, but slower.
+
+Asynchronous: Faster, but may lose latest data if primary fails.
+
+Benefits:
+High availability.
+
+Fault tolerance.
+
+Load balancing for read operations.
+
+Trade-offs:
+Replication lag in asynchronous mode.
+
+Risk of conflicts in multi-master setups.
+
+✅ 4. Partitioning
+Definition:
+Partitioning splits a database table into smaller parts called partitions, based on a partition key. It’s internal to a database system (not distributed across different DB servers like sharding).
+
+Types:
+Horizontal Partitioning (Row-based):
+
+Rows split based on values (e.g., range, list).
+
+Ex: Orders for India vs US stored in different partitions.
+
+Vertical Partitioning (Column-based):
+
+Splits table by columns.
+
+Ex: Store frequently accessed columns separately for performance.
+
+Hash Partitioning:
+
+Uses a hash function to distribute data evenly.
+
+Useful when range/list-based partitions are skewed.
+
+Advantages:
+Improves query performance and maintainability.
+
+Easier backups and purging of old data.
+
+Trade-offs:
+Can add complexity in query optimization.
+
+Might require application awareness for partitioning logic.
+
+✍️ Short Notes for Revision
+Topic	Summary
+SQL	Structured data, fixed schema, ACID, great for joins and transactions.
+NoSQL	Flexible schema, horizontal scaling, BASE, good for unstructured data and scale.
+Sharding	Splits data across DBs using shard key. Enables horizontal scale. Complex to manage.
+Replication	Copies data to replicas for high availability. Can be sync or async.
+Partitioning	Splits table internally (not across DBs). Row-based (horizontal), column-based (vertical), or hashed. Improves performance.
+
+Let me know if you'd like visual diagrams or Java-based code examples to understand these better.
+
+
+
+
+
+
+
+You said:
+can explain in detail about ACID and BASE and how SQL databases support ACID and NoSqls BASE
+
+
+ChatGPT said:
+Certainly! Let’s explore ACID and BASE in detail — these are two contrasting models of data consistency and reliability that underpin how SQL and NoSQL databases function.
+
+🔐 ACID (SQL Databases)
+ACID stands for:
+
+Property	Description
+A – Atomicity	All operations in a transaction either complete fully or not at all. Partial updates are not allowed.
+C – Consistency	A transaction takes the database from one valid state to another, maintaining all rules like constraints, foreign keys, etc.
+I – Isolation	Concurrent transactions are executed as if sequentially, meaning no interference.
+D – Durability	Once a transaction is committed, the data is persisted permanently, even after power failures or crashes.
+
+📘 Example: Bank Transfer
+sql
+Copy
+Edit
+-- Transfer ₹1000 from A to B
+BEGIN;
+
+UPDATE accounts SET balance = balance - 1000 WHERE user_id = 'A';
+UPDATE accounts SET balance = balance + 1000 WHERE user_id = 'B';
+
+COMMIT;
+If any update fails, the entire transaction rolls back, and the database remains unchanged. This is Atomicity. The balance will never go missing or duplicated — thanks to Consistency and Durability. If two transfers happen concurrently, Isolation ensures that one doesn’t interfere with the other.
+
+⚡ BASE (NoSQL Databases)
+BASE is a softer model often followed by NoSQL systems where high availability and partition tolerance are more important than immediate consistency.
+
+It stands for:
+
+Property	Description
+B – Basically Available	The system guarantees availability, meaning responses will be returned (even if with stale data).
+A – Soft State	The system's state may change over time, even without new input, due to eventual consistency or replication.
+SE – Eventual Consistency	The system will become consistent over time, given no new updates. Not guaranteed to be immediately consistent.
+
+📘 Example: Shopping Cart (NoSQL MongoDB or DynamoDB)
+Let’s say a user adds an item to the cart:
+
+The write goes to a primary node and is asynchronously replicated to secondary nodes.
+
+If another user queries a replica before replication finishes, they might see old data — but eventually, all nodes will reflect the updated cart.
+
+This allows:
+
+High write speed,
+
+Scalability,
+
+Better fault tolerance under network partitions.
+
+✅ How SQL Supports ACID
+Feature	Implementation
+Atomicity	Transaction blocks with rollback if failure occurs.
+Consistency	Enforced via foreign keys, constraints, and triggers.
+Isolation	Implemented via isolation levels (READ COMMITTED, SERIALIZABLE, etc.)
+Durability	Write-ahead logs (WAL), journaling, and persistent storage ensure committed data survives crashes.
+
+Most relational DBs like PostgreSQL, MySQL (InnoDB), Oracle are strongly ACID compliant.
+
+✅ How NoSQL Supports BASE
+Feature	Implementation
+Basically Available	NoSQL systems like Cassandra, DynamoDB, MongoDB prioritize availability over strict consistency.
+Soft State	Data in replicas may be stale temporarily; state converges later.
+Eventual Consistency	Updates are asynchronously propagated. Reads can be stale unless read-repair or quorum reads are used.
+
+BASE helps with:
+
+Scalability (across data centers or geographies),
+
+High throughput, and
+
+Tolerance to network failures.
+
+⚖️ ACID vs BASE: Key Differences
+Feature	ACID (SQL)	BASE (NoSQL)
+Consistency	Strong, immediate	Eventual
+Availability	Can be compromised during failures	Always prioritized
+Partition Tolerance	Limited (CAP theorem)	High
+Transactions	Full support	Limited or app-level
+Use Case	Banking, ERP, Inventory	Analytics, IoT, Social apps
+
+✍️ Quick Revision Notes
+Concept	SQL (ACID)	NoSQL (BASE)
+Atomicity	All-or-nothing	Not guaranteed
+Consistency	Strict, immediate	Eventually consistent
+Isolation	Concurrent safety	May allow dirty reads
+Durability	Persisted data	May rely on replication
+Availability	Not always under failures	Always available
+Use Cases	Financial systems	Real-time, scalable apps
+
+Let me know if you want visual diagrams or examples in Java or code-level transaction usage.
+
+
+
+
+=================================================
+
+
+You said:
+explain this
+Scaling is harder (typically vertical scaling).
+
+
+ChatGPT said:
+Certainly! Let's break it down:
+
+💡 "Scaling is harder (typically vertical scaling)" — What Does It Mean?
+This statement refers to how traditional SQL (relational) databases are scaled when they need to handle more data, users, or requests.
+
+🔧 Types of Scaling
+There are two main ways to scale a system:
+
+✅ 1. Vertical Scaling (Scale Up)
+Add more power (CPU, RAM, SSD) to a single server.
+
+Example: Upgrading from a 4-core to a 32-core machine, or adding more memory to the server.
+
+SQL databases like MySQL, PostgreSQL, Oracle are traditionally scaled this way.
+
+Pros:
+
+Simpler to manage (no need to split data).
+
+No data distribution or coordination required.
+
+Cons:
+
+Expensive: High-end hardware costs a lot.
+
+Limits: There’s a physical ceiling — you can’t scale infinitely.
+
+Downtime: May require downtime to upgrade.
+
+❌ 2. Horizontal Scaling (Scale Out)
+Add more servers/nodes to distribute the load.
+
+Common in NoSQL systems like MongoDB, Cassandra, and DynamoDB.
+
+Requires sharding or data partitioning to spread data across multiple nodes.
+
+Pros:
+
+Scales linearly — more servers → more power.
+
+High availability (even if one node fails).
+
+Cons:
+
+Complex: You must handle data distribution, replication, failover, consistency, etc.
+
+Application must be aware of how data is partitioned or queried across servers.
+
+🧠 Why SQL Typically Uses Vertical Scaling
+Traditional SQL databases:
+
+Are designed with strict consistency (ACID).
+
+Rely on relational joins, foreign keys, and complex queries that are hard to run across multiple servers.
+
+Sharding a relational schema can be difficult (foreign key relationships may span shards).
+
+Hence:
+
+It's easier to scale them vertically by making the single server stronger — rather than trying to distribute data across many machines (which is hard due to joins and transactions).
+
+⚖️ Example
+Suppose you're using MySQL for an e-commerce app:
+Traffic increases → queries slow down.
+
+You first try vertical scaling:
+
+Add more CPU cores, more memory, SSD → system performs better.
+
+Eventually, even a top-tier server isn’t enough.
+
+Now, to horizontally scale:
+
+You try read replicas (one master, many slaves).
+
+Then comes the hard part — sharding the data across multiple databases (e.g., by customer ID), but your queries become more complex.
+
+JOINs across shards? Very difficult to handle efficiently.
+
+📝 Summary
+Scaling Type	SQL Databases (Traditional)
+Vertical Scaling	✅ Common, easier
+Horizontal Scaling	❌ Harder (due to joins, ACID transactions)
+Result	Harder to scale compared to NoSQL

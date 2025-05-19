@@ -1,0 +1,11 @@
+Design a stock notification system based on movement of stock price.
+
+FRs
+1. Notify all the subscribers based on rule.
+
+
+NFR
+1. Notification should have low latency
+2. System should be highly available
+3. Support 100M active users
+4. Support upto 1M rules
